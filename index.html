@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CITADEL A18 // ТЧ-20 КОСТАНАЙ — ПАСПОРТ УЗЛА (v1.1.4)</title>
+<script>
+  /* Инициализация темы до первой отрисовки — чтобы не было вспышки */
+  (function () {
+    try {
+      var stored = localStorage.getItem('citadel-theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      } else {
+        var prefersLight = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      }
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<style>
+  :root {
+    --bg-page: #0d1117;
+    --bg-card: #161b22;
+    --border-color: #30363d;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --success: #238636;
+    --success-text: #3fb950;
+    --table-zebra: #11161d;
+  }
+  [data-theme="light"] {
+    --bg-page: #ffffff;
+    --bg-card: #f6f8fa;
+    --border-color: #d0d7de;
+    --text-primary: #1f2328;
+    --text-secondary: #656d76;
+    --accent: #0969da;
+    --success: #1a7f37;
+    --success-text: #1a7f37;
+    --table-zebra: #f9fafb;
+  }
+  @page {
+    size: 297mm 210mm;
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    counter-reset: slide;
+  }
+  .control-toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    gap: 10px;
+    background: rgba(22, 27, 34, 0.9);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  [data-theme="light"] .control-toolbar {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #d0d7de;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .btn {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-theme {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+  .slide {
+    width: 297mm;
+    min-height: 209.5mm;
+    padding: 20mm 24mm;
+    page-break-after: always;
+    break-after: page;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    border-bottom: 2px dashed var(--border-color);
+    background: var(--bg-page);
+    overflow: hidden;
+    counter-increment: slide;
+  }
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+  }
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+  }
+  .badge {
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 12px;
+    background: var(--success);
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .content {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .card-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .card-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--success-text);
+    margin-top: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  th {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+  tbody tr:nth-child(even) {
+    background: var(--table-zebra);
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    padding-top: 8px;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  .slide-num::before {
+    content: counter(slide) " ИЗ " var(--total-slides, 4);
+  }
+  @media print {
+    .control-toolbar { display: none !important; }
+    .slide {
+      border-bottom: none !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .slide:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="control-toolbar">
+  <button type="button" class="btn btn-theme" aria-label="Переключить светлую или тёмную тему" onclick="toggleTheme()">Переключить тему</button>
+  <button type="button" class="btn" aria-label="Печать или экспорт в PDF" onclick="window.print()">Печать / Экспорт в PDF</button>
+</div>
+
+<!-- СЛАЙД 1: ТИТУЛЬНЫЙ / СТАТУС КОНТУРА -->
+<div class="slide">
+  <div class="header">
+    <div class="title">CITADEL A18 // ТЧ-20 КОСТАНАЙ</div>
+    <div class="badge">СТАТУС: НОМИНАЛ (🟢 ШТАТНО)</div>
+  </div>
+  <div class="content">
+    <div style="font-size: 16px; color: var(--text-secondary); line-height: 1.5;">
+      Автономный узел суверенной инфраструктуры, криптографического аудита и коммерческого клиринга.
+      Фиксированный срез: <b>07.10.2026 15:40</b>.
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Ядро советника</div>
+        <div class="card-val">v1.1.3 Recovery</div>
+        <div class="card-sub">Escalation &amp; Recovery Gates</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Цепочка аудита</div>
+        <div class="card-val">44+ Блоков</div>
+        <div class="card-sub">SHA-256 неразрывна</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Эфирный поток</div>
+        <div class="card-val">432 Гц // 102 FM</div>
+        <div class="card-sub">Auto-Heal активен (порт 8088)</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Энергоконтур узла</div>
+        <div class="card-val">100% (AC)</div>
+        <div class="card-sub">Температура: 31.8°C (Норма)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Сторожевой таймер</div>
+        <div class="card-val">OK (Watchdog)</div>
+        <div class="card-sub">0 инцидентов за 24 ч</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Физический накопитель</div>
+        <div class="card-val">18.19 GB свободно</div>
+        <div class="card-sub">Фактор риска отсутствует</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>ЛОКАЦИЯ: СТ. КОСТАНАЙ // ТЧ-20</div>
+    <div>СРЕЗ: 07.10.2026 15:40 | СЛАЙД <span class="slide-num"></span></div>
+  </div>
+</div>
+
+<!-- СЛАЙД 2: ФИНАНСОВЫЙ И КАЗНАЧЕЙСКИЙ РЕЕСТР -->
+<div class="slide">
+  <div class="header">
+    <div class="title">ФИНАНСОВО-КАЗНАЧЕЙСКИЙ КОНТУР</div>
+    <div class="badge">РЕЕСТР СВЕРЕН 100%</div>
+  </div>
+  <div class="content">
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Боевой оборот</div>
+        <div class="card-val">981 000.00 KZT</div>
+        <div class="card-sub">15 подтвержденных контрактов</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Фонд Казны A18 (15%)</div>
+        <div class="card-val">147 150.00 KZT</div>
+        <div class="card-sub">Сегрегированный резерв</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Предотвращенный ущерб</div>
+        <div class="card-val">133 676.80 KZT</div>
+        <div class="card-sub">Акт ACT-EV-010 (Казна: 20 051.52)</div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Параметр</th>
+          <th>Значение в реестре</th>
+          <th>Метод верификации</th>
+          <th>Статус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Боевой реестр (orders)</td>
+          <td>15 контрактов (PAID / PROVENANCE)</td>
+          <td>Исключение ORD-NEG-, ORD-INGRESS-, TEST-</td>
+          <td>🟢 Подтверждено</td>
+        </tr>
+        <tr>
+          <td>Казначейская пломба</td>
+          <td>SHA: 52e375d2 (53 артефакта)</td>
+          <td>Холодный снимок tch20_ledger.db</td>
+          <td>🟢 Запечатано</td>
+        </tr>
+        <tr>
+          <td>Корень цепи аудита</td>
+          <td>d85e58582e1ad157...</td>
+          <td>Блоки SHA-256 в state.db</td>
+          <td>🟢 Валиден</td>
+        </tr>
+        <tr>
+          <td>Холодное хранилище</td>
+          <td>cold_vault_20261007_154613.tar.gz</td>
+          <td>SHA-256: 931c371a4887...</td>
+          <td>🟢 Проверен (tar test ok)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">
+    <div>ФИНАНСОВЫЙ СРЕЗ: TCH-20 LEDGER</div>
+    <div>СРЕЗ: 07.10.2026 15:40 | СЛАЙД <span class="slide-num"></span></div>
+  </div>
+</div>
+
+<!-- СЛАЙД 3: АВАРИЙНЫЙ ЦИКЛ И АВТОНОМИЯ -->
+<div class="slide">
+  <div class="header">
+    <div class="title">АВТОНОМНЫЙ ЦИКЛ ИНЦИДЕНТОВ (L6)</div>
+    <div class="badge">СТРЕСС-ТЕСТ: УСПЕШНО</div>
+  </div>
+  <div class="content">
+    <table>
+      <thead>
+        <tr>
+          <th>Этап инцидента</th>
+          <th>Механизм реакции</th>
+          <th>Поведение контура</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1. Обнаружение (STALE &gt; 30m)</td>
+          <td>Escalation Gate</td>
+          <td>Пробой суточного затвора, взвод флага ESCALATION.active</td>
+        </tr>
+        <tr>
+          <td>2. Удержание внимания</td>
+          <td>Escalation Repeater (cron */6)</td>
+          <td>Циклическая доставка тревоги в Telegram с требованием /ack</td>
+        </tr>
+        <tr>
+          <td>3. Восстановление (Heal)</td>
+          <td>Recovery Gate</td>
+          <td>Автоматическое снятие флага при возврате сторожа в норму</td>
+        </tr>
+        <tr>
+          <td>4. Квитирование</td>
+          <td>Incident Resolved Push</td>
+          <td>Отправка зеленого паспорта и возврат советника в NO-OP</td>
+        </tr>
+        <tr>
+          <td>5. Эфирный контур</td>
+          <td>Radio Auto-Heal (cron */5)</td>
+          <td>Мониторинг порта 8088, сброс зомби-сокетов, авто-рестарт</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">
+    <div>КОНТУР САМОРЕГУЛЯЦИИ CITADEL A18</div>
+    <div>СРЕЗ: 07.10.2026 15:40 | СЛАЙД <span class="slide-num"></span></div>
+  </div>
+</div>
+
+<!-- СЛАЙД 4: СТРУКТУРА БОЕВОГО РЕЕСТРА -->
+<div class="slide">
+  <div class="header">
+    <div class="title">СТРУКТУРА РЕЕСТРА И РАСПРЕДЕЛЕНИЕ</div>
+    <div class="badge">КЛИРИНГ: 15 КОНТРАКТОВ</div>
+  </div>
+  <div class="content">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Клиринг боевых поставок</div>
+        <div style="font-size: 13px; line-height: 1.6; margin-top: 6px;">
+          • <b>Инженерные сервисы ТЧ-20:</b> 8 контрактов (520 000 KZT)<br>
+          • <b>Связь и цифровой контур:</b> 4 контракта (280 000 KZT)<br>
+          • <b>Логистические ордера:</b> 3 контракта (181 000 KZT)<br>
+          <div style="margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 6px; font-weight: bold;">
+            Итого: 15 контрактов | 981 000.00 KZT
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Правила фильтрации и чистоты</div>
+        <div style="font-size: 13px; line-height: 1.6; margin-top: 6px;">
+          • Тестовые транзакции (<code>TEST-*</code>): <b>Исключены</b><br>
+          • Отрицательные корректировки (<code>ORD-NEG-*</code>): <b>Скомпенсированы</b><br>
+          • Входящие сырые пакеты (<code>ORD-INGRESS-*</code>): <b>В буфере</b><br>
+          <div style="margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 6px; font-weight: bold; color: var(--success-text);">
+            Отклонение от баланса: 0.00 KZT (Баланс чист)
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 4px;">
+      <div class="card-label">Аудиторская формула суверенного узла</div>
+      <div style="font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; color: var(--accent);">
+        Казна (15%) = 981 000.00 × 0.15 = 147 150.00 KZT | Принцип: 0 + 0 = 1 (Самодостаточность)
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>АРХИТЕКТУРНЫЙ ПАСПОРТ CITADEL A18</div>
+    <div>СРЕЗ: 07.10.2026 15:40 | СЛАЙД <span class="slide-num"></span></div>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    var root = document.documentElement;
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('citadel-theme', next); } catch (e) {}
+  }
+
+  /* Автонумерация: считаем слайды и подставляем общее число в CSS-переменную */
+  (function () {
+    var slides = document.querySelectorAll('.slide');
+    document.documentElement.style.setProperty('--total-slides', slides.length);
+  })();
+</script>
+
+</body>
+</html>
